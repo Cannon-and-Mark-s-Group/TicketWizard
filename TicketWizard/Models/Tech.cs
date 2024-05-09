@@ -8,6 +8,6 @@
 
         public virtual ICollection<Ticket> Tickets { get; set; }    
 
-
+        
     }
 }
