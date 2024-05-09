@@ -5,11 +5,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
 builder.Services.AddDbContextPool<TicketWizardContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("TicketAppContext")));
 
+var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
