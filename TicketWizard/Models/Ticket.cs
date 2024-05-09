@@ -1,22 +1,25 @@
-﻿namespace TicketWizard.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TicketWizard.Models
 {
-
     public enum Priority
-    { 
-    Low, Medium, High
-    };
+    {
+        Low, Mid, High
+    }
 
+    [Table("Ticket", Schema = "dbo")]
     public class Ticket
     {
-        public int TicketId { get; set; } 
-        public int TechID { get; set; } 
-        public string Description { get; set; } 
-        public DateTime CreatedDate { get; set; }   
-        public string Location { get; set; }    
-        public Priority priority { get; set; }
+        public int TicketId { get; set; }
+        public int TechId { get; set; }
+        public string Description { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public String Location { get; set; }
+        public Priority Priority { get; set; }
         public DateTime EndDate { get; set; }
         public string Notes { get; set; }
 
         public virtual Tech Tech { get; set; }
+
     }
 }
