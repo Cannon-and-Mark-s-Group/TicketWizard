@@ -17,14 +17,6 @@ namespace TicketWizard.Controllers
         // GET: Ticket
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var test = _context.Techs.ToList();
-            }
-            catch (Exception ex)
-            {
-
-            }
             return View(await _context.RequestTickets.ToListAsync());
         }
 
