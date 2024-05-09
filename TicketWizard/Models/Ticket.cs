@@ -8,8 +8,8 @@
 
     public class Ticket
     {
-        public int Id { get; set; }
-        public string TechId { get; set; }  
+        public int TicketId { get; set; } 
+        public int TechID { get; set; } 
         public string Description { get; set; } 
         public DateTime CreatedDate { get; set; }   
         public string Location { get; set; }    
