@@ -1,23 +1,19 @@
-﻿@model TicketWizard.Models.Ticket
+@model TicketWizard.Models.Ticket
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<a asp-action="Details" asp-route-id="@Model?.TicketId">↩ Back to Details</a>
 
-<h4>Ticket</h4>
+<h3>Edit Ticket @Html.DisplayFor(model => model.TicketId): @Html.DisplayFor(model => model.Description)</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TicketId" />
-            <div class="form-group">
-                <label asp-for="TechId" class="control-label"></label>
-                <input asp-for="TechId" class="form-control" />
-                <span asp-validation-for="TechId" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
@@ -31,9 +27,9 @@
             <div class="form-group">
                 <label asp-for="Priority" class="control-label"></label>
                 <select asp-for="Priority" class="form-control">
-                    <option value="High">High</option>
-                    <option value="Mid">Medium</option>
-                    <option value="Low">Low</option>
+                    <option value = "Low">Low</option>
+                    <option value = "Mid">Medium</option>
+                    <option value = "High">High</option>
                 </select>
                 <span asp-validation-for="Priority" class="text-danger"></span>
             </div>
@@ -43,15 +39,15 @@
                 <span asp-validation-for="Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="mt-2">
+                    <input type="submit" value="Save" class="btn btn-success"/>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
