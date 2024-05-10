@@ -17,14 +17,6 @@ namespace TicketWizard.Controllers
         // GET: Ticket
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                var test = _context.Techs.ToList();
-            }
-            catch (Exception ex)
-            {
-
-            }
             return View(await _context.RequestTickets.ToListAsync());
         }
 
@@ -57,15 +49,16 @@ namespace TicketWizard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,TechId,Description,CreatedDate,Location,Priority,EndDate,Notes")] Ticket ticket)
+        public async Task<IActionResult> Create([FromForm]Ticket ticket)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(ticket);
+            ticket.TechId = _context.Techs.Select(x => x.TechId).Max();
+            ticket.CreatedDate = DateTime.UtcNow;
+            ticket.EndDate = ticket.CreatedDate.AddDays(30);
+            _context.Add(ticket);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Ticket/Edit/5
@@ -89,34 +82,37 @@ namespace TicketWizard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,TechId,Description,CreatedDate,Location,Priority,EndDate,Notes")] Ticket ticket)
+        public async Task<IActionResult> Edit(Ticket ticket)
         {
-            if (id != ticket.TicketId)
+            if (ticket.TicketId == 0)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TicketExists(ticket.TicketId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                var updateTicket = new Ticket();
+                updateTicket.TechId = ticket.TechId;
+                updateTicket.Description = ticket.Description;
+                updateTicket.Location = ticket.Location;
+                updateTicket.Priority = ticket.Priority;
+                updateTicket.Notes = ticket.Notes;
+
+                _context.Update(ticket);
+                await _context.SaveChangesAsync();
             }
-            return View(ticket);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TicketExists(ticket.TicketId))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Ticket/Delete/5
